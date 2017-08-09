@@ -1,0 +1,25 @@
+
+<%= link_to 'Create game', new_game_path %>
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Access Token</th>
+    <th>Player 1 Token</th>
+    <th>Player 2 Token</th>
+    <th>Status</th>
+    <th>Board</th>
+  </tr>
+ 
+  <% @games.each do |game| %>
+    <tr>
+      <td><%= game.id %></td>
+      <td><%= game.accessToken %></td>
+      <td><%= game.player1Token %></td>
+      <td><%= game.player2Token %></td>
+      <td><%= game.status %></td>
+      <td><%= game.board %></td>
+
+      <td><%= link_to 'Forms', game_helperForms_path(game) %></td>
+    </tr>
+  <% end %>
+</table>

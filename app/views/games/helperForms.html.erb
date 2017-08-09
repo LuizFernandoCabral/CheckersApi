@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<%= form_for :status_token_validation, url: game_status_path do |f| %>
+
+  <p>
+    <%= f.label "Player Token" %><br>
+    <%= f.text_field :player_token %>
+  </p>
+  <p>
+    <%= f.submit "Get Status" %>
+  </p>
+<% end %>
+
+<%= form_for :player_2_join, url: game_join_path do |f| %>
+
+  <p>
+    <%= f.label "Access Token" %><br>
+    <%= f.text_field :access_token %>
+  </p>
+  <p>
+    <%= f.submit "Join game" %>
+  </p>
+<% end %>
