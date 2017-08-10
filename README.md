@@ -24,7 +24,8 @@ Which is the same as:
 ![checker 2](images/checkers2.png)
 
 > The pieces go on the white squares
-> They are the same with a 90º turn
+>
+> The boards are the same with a 90º turn
 
 ## For this game:
 * The board should be seen by the user as an 8x8 matrix starting at index 1 - Matrix(1..8)(1..8)
