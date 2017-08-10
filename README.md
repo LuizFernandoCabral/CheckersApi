@@ -5,11 +5,11 @@
 * Rails version: 5.1.3
 
 * Dependencies: 
-** nodejs - v4.2.6
-** sqlite3 - 3.11.0
+	- nodejs - v4.2.6
+	- sqlite3 - 3.11.0
 
 * Start: bin/rails server
 
-* Default rails url: http://localhost:3000
+* Default rails url after start: http://localhost:3000
 
 # CheckerApi
