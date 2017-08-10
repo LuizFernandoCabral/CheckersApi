@@ -39,6 +39,8 @@ Which is the same as:
 * Index is a summary of the db contents, should not be considered as an actual page (it would be removed if deploying)
 
 ## Requisições:
+> To help with requests there is a form page for each game
+
 * Create game: 
 	- Post /games
 	- No parameters (Post data) required
@@ -70,7 +72,6 @@ Which is the same as:
 		- move[to_col]
 
 > All row and columns range from 1..8
-
 
 ### Features not implemented or not fully teste, that make the game not work like a real checkers game
 * King piece (not fully implemented, not fully tested) 
