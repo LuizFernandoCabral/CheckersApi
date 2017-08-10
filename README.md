@@ -18,19 +18,23 @@ Not very familiar with ruby (more so with ruby on rails), forgive for any out of
 	- for example, column names in db are camelToe, and not underline spaced
 
 A checker game look:
-![checker 1]()
+![checker 1](images/checkers1.png)
 
 Which is the same as:
-![checker 2]()
+![checker 2](images/checkers2.png)
+
+> The pieces go on the white squares
+> They are the same with a 90º turn
 
 ## For this game:
 * The board should be seen by the user as an 8x8 matrix starting at index 1 - Matrix(1..8)(1..8)
 	- So from (1)(1) up to (8)(8)
-* The second look will be treated as the first look; that means that the position 1,2 will be treated as position 1,1. 
-	- therefore the possible move for that would be 2,2 (if empty)
+* The second look will be treated as the first look; that means that the position (1)(2) will be treated as position (1)(1). 
+	- therefore the possible move for that would be (2)(2) (if empty)
 * Player one starts at the "top" - (1)(1); (1)(3); (1)(5); (1)(7); (2)(2); (2)(4); (2)(6); (2)(8); (3)(1); (3)(3); (3)(5); (3)(7)
 * Player two starts at the "bottom" - (8)(2); (8)(4); (8)(6); (8)(8); (7)(1); (7)(3); (7)(5); (7)(7); (6)(2); (6)(4); (6)(6); (6)(8)
 * Player one pieces are named "1", player 2 pieces "2", and empty spaces "0"
+* King pieces are named -1 and -2 respectively to player 1 and player 2
 * As in a checkers game only half the spaces can ever be occupied, the board is treated in the model (only in the model) as an 8x4 matrix represented as a comma separated string
 * Index is a summary of the db contents, should not be considered as an actual page (it would be removed if deploying)
 
@@ -68,6 +72,8 @@ Which is the same as:
 > All row and columns range from 1..8
 
 
-### Features not implemented, that make the game not work like a real checkers game
-* King piece - so when the piece reaches final opposite row, the game will get stuck at some point
+### Features not implemented or not fully teste, that make the game not work like a real checkers game
+* King piece (not fully implemented, not fully tested) 
+	- When the piece reaches final opposite row, the game might get stuck at some point
+	- King piece only moves one square like other pieces, but in all directions
 * Multiple jumps - max of one jump per play

@@ -47,13 +47,22 @@ class Game < ApplicationRecord
   	board_as_array[from-1] = "0"
 
   	if player == 'one'
-  	  board_as_array[to-1] = "1"
+  	  if index_to_row(to) == 8 || is_king(from)
+  	  	board_as_array[to-1] = "-1"
+  	  else
+  	  	board_as_array[to-1] = "1"
+  	  end
   	elsif player == 'two'
-  	  board_as_array[to-1] = "2"
+  	  if index_to_row(to) == 1 || is_king(from)
+  	  	board_as_array[to-1] = "-2"
+  	  else
+  	  	board_as_array[to-1] = "2"
+  	  end
   	end
 
+	#jump
   	diff = to - from
-  	if diff.abs > 5
+  	if diff.abs > 4
   	  board_as_array[get_enemy(from, to)-1] = "0"
   	end
 
@@ -127,9 +136,14 @@ class Game < ApplicationRecord
 
   def allowed_move?(player, from, to)
   	empty = pos_is_empty?(to)
-  	rigth_dst_row = ((player == 'one' && from < to) || (player == 'two' && from > to))
+  	rigth_dst_row = ((player == 'one' && from < to) || (player == 'two' && from > to)) || is_king?(from)
   	return rigth_dst_row && empty
   end
+
+  def is_king?(pos)
+	board_as_array = self.board.split(",")
+	return Integer(board_as_array[pos]) < 0
+
 
   def get_jump_destinations(player, pos)
   	jump_destinations = Array.new
@@ -159,7 +173,7 @@ class Game < ApplicationRecord
 
   def allowed_jump?(player, from, to)
   	empty = pos_is_empty?(to)
-  	rigth_dst_row = ((player == 'one' && from < to) || (player == 'two' && from > to))
+  	correct_row = ((player == 'one' && from < to) || (player == 'two' && from > to)) || is_king?(from)
   	enemy = is_there_enemy?(player, from, to)
   	return empty && rigth_dst_row && enemy
   end
