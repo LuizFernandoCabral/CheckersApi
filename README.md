@@ -61,7 +61,6 @@ Which is the same as:
 		- check_moves[player_token]
 		- check_moves[row]
 		- check_moves[col]
-	- row and col range from 1..8
 * Make move|play
 	- Post /games/:game_id/check_moves
 	- Parameters:
@@ -74,7 +73,7 @@ Which is the same as:
 
 > All row and columns range from 1..8
 
-### Features not implemented or not fully teste, that make the game not work like a real checkers game
+### Features not implemented or not fully tested
 * King piece (not fully implemented, not fully tested) 
 	- When the piece reaches final opposite row, the game might get stuck at some point
 	- King piece only moves one square like other pieces, but in all directions
