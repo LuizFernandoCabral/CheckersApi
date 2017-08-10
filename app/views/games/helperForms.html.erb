@@ -3,7 +3,11 @@
 <%= form_for :status_token_validation, url: game_status_path do |f| %>
 
   <p>
-    <%= f.label "Player Token" %><br>
+    <%= f.label "Player" %>
+    <%= f.select(:player, ['one', 'two'])%>
+  </p>
+  <p>
+    <%= f.label "Player Token" %>
     <%= f.text_field :player_token %>
   </p>
   <p>
@@ -11,13 +15,77 @@
   </p>
 <% end %>
 
+<p>*********************************************</p>
+
 <%= form_for :player_2_join, url: game_join_path do |f| %>
 
   <p>
-    <%= f.label "Access Token" %><br>
+    <%= f.label "Access Token" %>
     <%= f.text_field :access_token %>
   </p>
   <p>
     <%= f.submit "Join game" %>
+  </p>
+<% end %>
+
+<p>*********************************************</p>
+
+<%= form_for :check_moves, url: game_check_moves_path do |f| %>
+
+  <p>
+    <%= f.label "Player" %>
+    <%= f.select(:player, ['one', 'two'])%>
+  </p>
+  <p>
+    <%= f.label "Player Token" %>
+    <%= f.text_field :player_token %>
+  </p>
+  <p style="display: inline-block;">
+    <%= f.label "Piece (row - 1..8)(column - 1..8)" %>
+  	<div style="display: inline-block;">
+    	<%= f.text_field :row %>
+    </div>
+    <div style="display: inline-block;">
+    	<%= f.text_field :col %>
+    </div>
+  </p>
+  <p>
+    <%= f.submit "Check allowed moves" %>
+  </p>
+<% end %>
+
+<p>*********************************************</p>
+
+<%= form_for :move, url: game_move_path do |f| %>
+
+  <p>
+    <%= f.label "Player" %>
+    <%= f.select(:player, ['one', 'two'])%>
+  </p>
+  <p>
+    <%= f.label "Player Token" %>
+    <%= f.text_field :player_token %>
+  </p>
+  <p style="display: inline-block;">
+    <%= f.label "From (row - 1..8)(column - 1..8)" %>
+  </p>
+  <div style="display: inline-block;">
+    <%= f.text_field :from_row %>
+  </div>
+  <div style="display: inline-block;">
+    <%= f.text_field :from_col %>
+  </div>
+  <br>
+  <p style="display: inline-block;">
+    <%= f.label "To (row - 1..8)(column - 1..8)" %>
+  </p>
+  <div style="display: inline-block;">
+    <%= f.text_field :to_row %>
+  </div>
+  <div style="display: inline-block;">
+    <%= f.text_field :to_col %>
+  </div>
+  <p>
+    <%= f.submit "Move" %>
   </p>
 <% end %>
