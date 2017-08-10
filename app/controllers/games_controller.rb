@@ -84,14 +84,18 @@ class GamesController < ApplicationController
   	to_row = Integer(params[:move][:to_row])-1
   	to_col = Integer(params[:move][:to_col])+1
 
-  	if @game.is_valid_token?(player, token)
+  	if @game.is_valid_token?(player, token) && @game.is_player_turn?(player)
 	  from_pos = input_to_pos(from_row, from_col)
 	  to_pos = input_to_pos(to_row, to_col)
 	  allowed_moves = @game.moves_at(from_pos, player)
 	  if allowed_moves.include?(to_pos)
 	  	@game.move(from_pos, to_pos, player)
+	  	@game.update_turn
+	  	render :json => {:Game => @game.id, :board => @game.board}
+	  else
+	  	flash.now[:notice] = "Invalid move for player #{player}!"
+      	render 'helperForms'
 	  end
-	  render :json => {:Game => @game.id, :board => @game.board}
 	else
 	  flash.now[:notice] = "Invalid token for player #{player}!"
       render 'helperForms'

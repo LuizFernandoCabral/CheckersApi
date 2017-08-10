@@ -24,6 +24,14 @@ class Game < ApplicationRecord
         "accessToken" => generate_rand_token)
   end
 
+  def is_player_turn?(player)
+  	if player == 'one'
+  	  return self.status.include?("1")
+  	else
+  	  return self.status.include?("2")
+  	end
+  end
+
   def moves_at(pos, player)
   	destinations = Array.new
   	if pos_is_empty?(pos)
@@ -50,6 +58,15 @@ class Game < ApplicationRecord
   	end
 
   	self.update("board" => board_as_array.join(','))
+  end
+
+  def update_turn
+  	current_turn = self.status
+  	if current_turn.include?("1")
+  	  self.update("status" => "player_2 turn")
+  	else
+  	  self.update("status" => "player_1 turn")
+	end
   end
 
   private
@@ -84,18 +101,18 @@ class Game < ApplicationRecord
 
   def get_simple_destinations(player, pos)
   	simple_destinations = Array.new
-  	full_moves_map = get_moves_map
+  	possible_destinations = get_possible_destinations(pos)
 
-  	full_moves_map[pos].each do |dst|
-  	  if allowed_move(player, pos, dst)
+  	possible_destinations.each do |dst|
+  	  if allowed_move?(player, pos, dst)
   	  	simple_destinations.push(dst)
   	  end
   	end
   	return simple_destinations
   end
 
-  def get_moves_map
-    return moves_map = {
+  def get_possible_destinations(pos)
+    moves_map = {
       1=>[5,6],2=>[6,7],3=>[7,8],4=>[8],
       5=>[1,9],6=>[1,2,9,10],7=>[2,3,10,11],8=>[3,4,11,12],
       9=>[5,6,13,14],10=>[6,7,14,15],11=>[7,8,15,16],12=>[8,16],
@@ -105,9 +122,10 @@ class Game < ApplicationRecord
       25=>[21,22,29,30],26=>[22,23,30,31],27=>[23,24,31,32],28=>[24,32],
       29=>[25],30=>[25,26],31=>[26,27],32=>[27,28]
     }
+    return moves_map[pos]
   end
 
-  def allowed_move(player, from, to)
+  def allowed_move?(player, from, to)
   	empty = pos_is_empty?(to)
   	rigth_dst_row = ((player == 'one' && from < to) || (player == 'two' && from > to))
   	return rigth_dst_row && empty
@@ -115,18 +133,18 @@ class Game < ApplicationRecord
 
   def get_jump_destinations(player, pos)
   	jump_destinations = Array.new
-  	full_jump_map = get_jump_map
+  	possible_jumps = get_possible_jumps(pos)
 
-  	full_jump_map[pos].each do |dst|
-  	  if allowed_jump(player,pos, dst)
+  	possible_jumps.each do |dst|
+  	  if allowed_jump?(player,pos, dst)
   	  	jump_destinations.push(dst)
   	  end
   	end
   	return jump_destinations
   end
 
-  def get_jump_map
-    return jumps_map = {
+  def get_possible_jumps(pos)
+    jumps_map = {
       1=>[10],2=>[9,11],3=>[10,12],4=>[11],
       5=>[14],6=>[13,15],7=>[14,16],8=>[15],
       9=>[2,18],10=>[1,3,17,19],11=>[2,4,18,20],12=>[3,19],
@@ -136,16 +154,17 @@ class Game < ApplicationRecord
       25=>[18],26=>[17,19],27=>[18,20],28=>[19],
       29=>[22],30=>[21,23],31=>[22,24],32=>[23]
     }
+    return jumps_map[pos]
   end
 
-  def allowed_jump(player, from, to)
+  def allowed_jump?(player, from, to)
   	empty = pos_is_empty?(to)
   	rigth_dst_row = ((player == 'one' && from < to) || (player == 'two' && from > to))
-  	enemy = is_there_enemy(player, from, to)
+  	enemy = is_there_enemy?(player, from, to)
   	return empty && rigth_dst_row && enemy
   end
 
-  def is_there_enemy(player, from, to)
+  def is_there_enemy?(player, from, to)
 	board_as_array = self.board.split(",")
 	two_is_enemy = (player == 'one') && board_as_array[get_enemy(from, to)-1] == '2'
 	one_is_enemy = (player == 'two') && board_as_array[get_enemy(from, to)-1] == '1'
