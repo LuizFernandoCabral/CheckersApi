@@ -143,7 +143,7 @@ class Game < ApplicationRecord
   def is_king?(pos)
 	board_as_array = self.board.split(",")
 	return Integer(board_as_array[pos]) < 0
-
+  end
 
   def get_jump_destinations(player, pos)
   	jump_destinations = Array.new
