@@ -7,18 +7,13 @@ class GamesController < ApplicationController
     @game = Game.new
 
     if @game.save
-      redirect_to @game
-    else
-      render 'new'
-    end
-  end
-
-  def show
-  	@game = Game.find(params[:id])
-    render :json => {:Game => @game.id, 
+      render :json => {:Game => @game.id, 
     	"player_token" => @game.player1Token,
     	"access_token" => @game.accessToken,
     	:board => @game.board}
+    else
+      render 'new'
+    end
   end
 
   def status
@@ -53,10 +48,10 @@ class GamesController < ApplicationController
     player = params[:check_moves][:player]
   	token = params[:check_moves][:player_token]
 
-  	row = Integer(params[:check_moves][:row])-1
-  	col = Integer(params[:check_moves][:col])+1
-
   	if @game.is_valid_token?(player, token)
+  	  row = Integer(params[:check_moves][:row])-1
+  	  col = Integer(params[:check_moves][:col])+1
+
 	  pos = input_to_pos(row, col)
 	  output_dst = Array.new
 	  destinations = @game.moves_at(pos, player)
@@ -78,13 +73,13 @@ class GamesController < ApplicationController
     player = params[:move][:player]
   	token = params[:move][:player_token]
 
-  	from_row = Integer(params[:move][:from_row])-1
-  	from_col = Integer(params[:move][:from_col])+1
-
-  	to_row = Integer(params[:move][:to_row])-1
-  	to_col = Integer(params[:move][:to_col])+1
-
   	if @game.is_valid_token?(player, token) && @game.is_player_turn?(player)
+  	  from_row = Integer(params[:move][:from_row])-1
+  	  from_col = Integer(params[:move][:from_col])+1
+
+  	  to_row = Integer(params[:move][:to_row])-1
+  	  to_col = Integer(params[:move][:to_col])+1
+
 	  from_pos = input_to_pos(from_row, from_col)
 	  to_pos = input_to_pos(to_row, to_col)
 	  allowed_moves = @game.moves_at(from_pos, player)
